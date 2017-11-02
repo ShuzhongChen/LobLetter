@@ -10,7 +10,8 @@ var Lob        = new LobFactory('test_ff05dcb8e3a6e89d82dff969b13c6693d0c');
 
 var inputFile = fs.createReadStream(__dirname + '/input.csv');
 var successFd = fs.openSync(__dirname + '/success.csv', 'w');
-var errorFd = fs.openSync(__dirname + '/error.csv', 'w');
+var vErrorFd = fs.openSync(__dirname + '/vError.csv', 'w');
+var sErrorFd = fs.openSync(__dirname + '/sError.csv', 'w');
 var letterTemplate = fs.readFileSync(__dirname + '/letter_template.html').toString();
 
 var google = require('googleapis');
@@ -64,6 +65,15 @@ var parser = parse({ columns: true }, function (err, data) {
           roles: 'deputyHeadOfGovernment',
 
         }, function (err, data) {
+          if (err) {
+            converter.json2csv(err, function (err, csv) {
+            if (err) {
+              throw err;
+            }
+            fs.write(vErrorFd, csv);
+          }, { PREPEND_HEADER: false });
+          }
+          
           if (data != null) {
 
             Lob.letters.create({
@@ -101,12 +111,21 @@ var parser = parse({ columns: true }, function (err, data) {
                 if (err) {
                   throw err;
                 }
-                fs.write(errorFd, csv);
+                fs.write(sErrorFd, csv);
               }, { PREPEND_HEADER: false });
             });
 
           }
         });
+    })
+    .catch(function () {
+      console.log('Could not send letter to ');
+      converter.json2csv(client, function (err, csv) {
+        if (err) {
+          throw err;
+        }
+        //fs.write(vErrorFd, csv);
+      }, { PREPEND_HEADER: false });
     });
   });
 
