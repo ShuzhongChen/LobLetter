@@ -58,7 +58,7 @@ var parser = parse({ columns: true }, function (err, data) {
         var createAddress = verifiedAddress.primary_line + verifiedAddress.secondary_line + ', ' + address.city + ', ' 
                             + address.state + ' ' + address.zip_code;
 
-        civicinfo.representatives.representativeInfoByAddress({
+        civicinfo.representatives.representativeInfoByAddress({ // use Google API to get legislator information
           auth: API_KEY,
           address: createAddress,
           includeOffices: 'true',
@@ -77,7 +77,7 @@ var parser = parse({ columns: true }, function (err, data) {
           
           if (data != null) {
 
-            Lob.letters.create({
+            Lob.letters.create({  // use Lob API to create letter
             description: 'Letter for ' + data.officials[0].name,
             to: {
               name: data.officials[0].name,
