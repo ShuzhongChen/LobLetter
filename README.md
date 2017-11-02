@@ -16,7 +16,7 @@ This program accepts input by reading from a CSV file. The input includes name o
 
 Firstly, Lob's [US Address Verification API](https://lob.com/services/verifications) is used to validate and clean addresses. Then using [Google Civic Information API](https://developers.google.com/civic-information/docs/v2/representatives/representativeInfoByAddress) to return a representative contact information by using the input address. At last, Lob's [Letter API](https://lob.com/services/letters) is used to create a letter to send legislator. 
 
-The output is a CSV file name "success.csv" including the sender's information and URL to the PDF of the letter in Lob's API response. The errors from Google Civic Information API will be catched and saved in gError.csv file. The errors from Lob will also be catched and saved in sError.csv file.
+The output is a CSV file named "success.csv" including the sender's information and URL to the PDF of the letter in Lob's API response. The errors from Google Civic Information API will be catched and saved in "gError.csv" file. The errors from Lob will also be catched and saved in "sError.csv" file.
 
 In order to run the program enter:
 
