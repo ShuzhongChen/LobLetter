@@ -6,10 +6,11 @@ var moment   = require('moment');
 var parse    = require('csv-parse');
 
 var LobFactory = require('../lib/index.js');
-var Lob        = new LobFactory('test_ff05dcb8e3a6e89d82dff969b13c6693d0c');
+var Lob        = new LobFactory('test_ff05dcb8e3a6e89d82dff969b13c6693d0c'); // Lob.com API key
 
 var inputFile = fs.createReadStream(__dirname + '/input.csv');
 var successFd = fs.openSync(__dirname + '/success.csv', 'w');
+var gErrorFd = fs.openSync(__dirname + '/gError.csv', 'w');
 var vErrorFd = fs.openSync(__dirname + '/vError.csv', 'w');
 var sErrorFd = fs.openSync(__dirname + '/sError.csv', 'w');
 var letterTemplate = fs.readFileSync(__dirname + '/letter_template.html').toString();
@@ -17,7 +18,7 @@ var letterTemplate = fs.readFileSync(__dirname + '/letter_template.html').toStri
 var google = require('googleapis');
 var civicinfo = google.civicinfo('v2');
 
-var API_KEY = 'AIzaSyAJUniUdavPuKM1DlZWJj5kH4l-dF3Iwrs'; // API key
+var API_KEY = 'AIzaSyAJUniUdavPuKM1DlZWJj5kH4l-dF3Iwrs'; // Google API key
 
 
 var parser = parse({ columns: true }, function (err, data) {
@@ -70,7 +71,7 @@ var parser = parse({ columns: true }, function (err, data) {
             if (err) {
               throw err;
             }
-            fs.write(vErrorFd, csv);
+            fs.write(gErrorFd, csv);
           }, { PREPEND_HEADER: false });
           }
           
@@ -124,7 +125,7 @@ var parser = parse({ columns: true }, function (err, data) {
         if (err) {
           throw err;
         }
-        //fs.write(vErrorFd, csv);
+      fs.write(vErrorFd, csv);
       }, { PREPEND_HEADER: false });
     });
   });
